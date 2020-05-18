@@ -6,6 +6,7 @@ import com.kbit.kbnetworklib.config.NetworkSetting;
 
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -16,14 +17,18 @@ public class HttpService {
     private static final int DEFAULT_READ_TIME_OUT = 10;
     private Retrofit mRetrofit = null;
 
-    private HttpService(String baseUrl) {
+    private HttpService(String baseUrl, Interceptor headers, Interceptor commonParams, Interceptor cache) {
         // 创建 OKHttpClient
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         builder.connectTimeout(DEFAULT_TIME_OUT, TimeUnit.SECONDS);//连接超时时间
         builder.writeTimeout(DEFAULT_READ_TIME_OUT, TimeUnit.SECONDS);//写操作 超时时间
         builder.readTimeout(DEFAULT_READ_TIME_OUT, TimeUnit.SECONDS);//读操作超时时间
         // 公共的请求头拦截器
-        builder.addInterceptor(new HeaderInterceptor());
+        if (headers == null) {
+            builder.addInterceptor(new HeaderInterceptor());
+        } else {
+            builder.addInterceptor(headers);
+        }
         // 添加log拦截器
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -59,7 +64,11 @@ public class HttpService {
      * @return
      */
     public static HttpService createInstance(String baseUrl) {
-        return new HttpService(baseUrl);
+        return new HttpService(baseUrl, null, null, null);
+    }
+
+    public static HttpService createInstance(String baseUrl, Interceptor headers, Interceptor commonParams, Interceptor cache) {
+        return new HttpService(baseUrl, headers, commonParams, cache);
     }
 
     /**
