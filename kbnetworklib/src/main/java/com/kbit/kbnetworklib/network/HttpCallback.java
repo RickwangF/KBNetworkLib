@@ -1,6 +1,7 @@
 package com.kbit.kbnetworklib.network;
 
 import android.os.NetworkOnMainThreadException;
+import android.util.Log;
 
 import java.io.IOException;
 import java.net.ConnectException;
@@ -30,6 +31,9 @@ public abstract class HttpCallback<T> implements Callback<HttpResponse<T>> {
     //正确回调
     public abstract void onSuccess(T t);
 
+    public void onUnAuthorize() {
+
+    }
 
     @Override
     public void onResponse(Call<HttpResponse<T>> call, final Response<HttpResponse<T>> response) {
@@ -41,8 +45,25 @@ public abstract class HttpCallback<T> implements Callback<HttpResponse<T>> {
             int code = response.body().getCode();
             if (code != 0) {
                 if(code > 0) {
-                    System.out.println("网络请求失败");
-                    return;
+                    String errorMsg = "";
+                    if (response.body().getMessage() != null) {
+                        errorMsg = response.body().getMessage();
+                        Log.e("Network", "message is " + errorMsg);
+                    }
+                    switch (code) {
+                        case 401:
+                            onUnAuthorize();
+                            return;
+                        case 404:
+                            onFailMessage("地址错误", RESPONSE_FATAL_ERROR);
+                            return;
+                        case 500:
+                            onFailMessage("服务器错误，" + errorMsg, RESPONSE_FATAL_ERROR );
+                            return;
+                        case 502:
+                            onFailMessage("连接服务器失败，" + errorMsg, RESPONSE_FATAL_ERROR);
+                            return;
+                    }
                 }
                 onFailMessage(response.body().getMessage(), RESPONSE_FATAL_ERROR);
                 return;

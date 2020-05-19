@@ -36,6 +36,11 @@ public class MainActivity extends AppCompatActivity {
             public void onFailMessage(String msg, int code) {
                 Log.e("network", "fail message " + msg);
             }
+
+            @Override
+            public void onUnAuthorize() {
+
+            }
         });
     }
 }
