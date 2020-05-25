@@ -14,8 +14,7 @@ public class HttpResponse <T> {
     @SerializedName("data")
     private T data;
 
-    @Expose(serialize = false, deserialize = false)
-    private Object extra;
+    private transient Object extra;
 
     public HttpResponse() {
     }
