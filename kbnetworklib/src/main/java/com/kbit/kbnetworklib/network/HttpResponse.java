@@ -1,5 +1,6 @@
 package com.kbit.kbnetworklib.network;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class HttpResponse <T> {
@@ -13,6 +14,7 @@ public class HttpResponse <T> {
     @SerializedName("data")
     private T data;
 
+    @Expose(serialize = false, deserialize = false)
     private Object extra;
 
     public HttpResponse() {
