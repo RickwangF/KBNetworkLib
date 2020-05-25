@@ -13,6 +13,8 @@ public class HttpResponse <T> {
     @SerializedName("data")
     private T data;
 
+    private Object extra;
+
     public HttpResponse() {
     }
 
@@ -38,5 +40,13 @@ public class HttpResponse <T> {
 
     public void setData(T data) {
         this.data = data;
+    }
+
+    public Object getExtra() {
+        return extra;
+    }
+
+    public void setExtra(Object extra) {
+        this.extra = extra;
     }
 }
