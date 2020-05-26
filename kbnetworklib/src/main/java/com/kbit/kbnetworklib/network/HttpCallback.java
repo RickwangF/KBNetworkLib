@@ -112,7 +112,7 @@ public abstract class HttpCallback<T> implements Callback<HttpResponse<T>> {
                 // ... ...
             } else if (t instanceof RuntimeException) { //很多的错误都是extends RuntimeException
                 errorCode = RESPONSE_FATAL_ERROR;
-                errorMsg = "运行时错误";
+                errorMsg = "JSON数据解析错误";
             }
             onFailMessage(errorMsg,errorCode);
         }
