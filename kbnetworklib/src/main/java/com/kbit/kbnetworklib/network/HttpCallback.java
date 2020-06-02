@@ -71,13 +71,19 @@ public abstract class HttpCallback<T> implements Callback<HttpResponse<T>> {
             onSuccess(response.body().getData());
         }
         else {
-            if(retryTimes < maxRetryTimes && retryFlag)
-            {
+            if(retryTimes < maxRetryTimes && retryFlag) {
                 retryTimes++;
                 retry(call);
             }
-            else
-                onFailMessage("网络连接超时", RESPONSE_FATAL_ERROR);
+            else {
+                onFailMessage("请求出错, " + response.code() + ":" + response.message(), RESPONSE_FATAL_ERROR);
+                String message = response.message();
+                String errorBodyString = "";
+                if (response.errorBody() != null) {
+                    errorBodyString = response.errorBody().toString();
+                }
+                Log.e("Network", "请求出错，" + response.code() + ":" + message + "==>" + errorBodyString);
+            }
         }
     }
 

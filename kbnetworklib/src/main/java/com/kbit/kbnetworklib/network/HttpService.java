@@ -13,8 +13,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class HttpService {
-    private static final int DEFAULT_TIME_OUT = 10;//超时时间 3s
-    private static final int DEFAULT_READ_TIME_OUT = 10;
+    private static final int DEFAULT_TIME_OUT = 30;//超时时间 3s
+    private static final int DEFAULT_READ_TIME_OUT = 30;
     private Retrofit mRetrofit = null;
 
     private HttpService(String baseUrl, Interceptor headers, Interceptor commonParams, Interceptor cache) {
