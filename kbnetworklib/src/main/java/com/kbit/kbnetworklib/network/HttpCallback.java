@@ -3,6 +3,9 @@ package com.kbit.kbnetworklib.network;
 import android.os.NetworkOnMainThreadException;
 import android.util.Log;
 
+import com.google.gson.JsonNull;
+import com.kbit.kbbaselib.util.JsonUtil;
+
 import java.io.IOException;
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
@@ -69,6 +72,7 @@ public abstract class HttpCallback<T> implements Callback<HttpResponse<T>> {
                 return;
             }
             onSuccess(response.body().getData());
+            Log.e("Network", "response is " + JsonUtil.bean2Json(response.body()));
         }
         else {
             if(retryTimes < maxRetryTimes && retryFlag) {
