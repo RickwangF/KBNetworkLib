@@ -37,7 +37,7 @@ public class HeaderInterceptor implements Interceptor {
         if (pushToken == null) {
             pushToken = "";
         }
-        String key = EncryptTool.get32MD5(accessToken + time + NetworkSetting.getAppKey());
+        String key = EncryptTool.get32MD5(NetworkSetting.getAppId() + NetworkSetting.getAppKey() + time );
         if (TextUtils.isEmpty(key)) {
             key = "";
         }
