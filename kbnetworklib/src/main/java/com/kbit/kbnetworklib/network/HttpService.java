@@ -1,5 +1,7 @@
 package com.kbit.kbnetworklib.network;
 
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.kbit.kbnetworklib.config.NetworkSetting;
@@ -30,7 +32,13 @@ public class HttpService {
             builder.addInterceptor(headers);
         }
         // 添加log拦截器
-        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+        HttpLoggingInterceptor.Logger DEFAULT = new HttpLoggingInterceptor.Logger() {
+            @Override
+            public void log(String message) {
+                HttpService.log(message);
+            }
+        };
+        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor(DEFAULT);
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         builder.addInterceptor(loggingInterceptor);
         // 添加公共参数拦截器
@@ -80,5 +88,22 @@ public class HttpService {
      */
     public <T> T create(Class<T> service) {
         return mRetrofit.create(service);
+    }
+
+    public static void log(String message) {
+        if (message.length() > 4000) {
+            // integer division
+            int chunkCount = message.length() / 4000;
+            for (int i = 0; i <= chunkCount; i++) {
+                int max = 4000 * (i + 1);
+                if (max >= message.length()) {
+                    Log.e("======", "chunk " + i + " of " + chunkCount + ":" + message.substring(4000 * i));
+                } else {
+                    Log.e("======", "chunk " + i + " of " + chunkCount + ":" + message.substring(4000 * i, max));
+                }
+            }
+        } else {
+            Log.e("======", message);
+        }
     }
 }
