@@ -1,6 +1,6 @@
 package com.kbit.kbnetworklib.network;
 
-import com.kbit.kbbaselib.context.ContextProvider;
+import com.kbit.kbbaselib.lifecircle.BaseApplication;
 import com.kbit.kbnetworklib.status.NetworkStatus;
 
 import java.io.IOException;
@@ -21,7 +21,7 @@ public class CacheInterceptor  implements Interceptor {
         Request request = chain.request();
 
         //（修改请求）没有网络的时候强制访问缓存
-        if(!NetworkStatus.isConnected(ContextProvider.getContext()))
+        if(!NetworkStatus.isConnected(BaseApplication.getContext()))
         {
             request = request.newBuilder()
                     .cacheControl(CacheControl.FORCE_CACHE)
@@ -32,7 +32,7 @@ public class CacheInterceptor  implements Interceptor {
         Response responseOrignal = chain.proceed(request);
 
         //（修改响应）有网络连接的时候读取每个接口上的缓存设置，未设置的不使用缓存
-        if(NetworkStatus.isConnected(ContextProvider.getContext())) {
+        if(NetworkStatus.isConnected(BaseApplication.getContext())) {
             String cacheControl = request.cacheControl().toString();
 
             return responseOrignal.newBuilder()

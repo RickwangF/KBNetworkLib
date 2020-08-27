@@ -2,8 +2,8 @@ package com.kbit.kbnetworklib.network;
 
 import android.text.TextUtils;
 
-import com.kbit.kbbaselib.context.ContextProvider;
 import com.kbit.kbbaselib.encrypt.EncryptTool;
+import com.kbit.kbbaselib.lifecircle.BaseApplication;
 import com.kbit.kbbaselib.util.PackageUtil;
 import com.kbit.kbnetworklib.config.NetworkSetting;
 import com.kbit.kbnetworklib.status.NetworkStatus;
@@ -23,7 +23,7 @@ public class HeaderInterceptor implements Interceptor {
     @Override
     public Response intercept(Chain chain) throws IOException {
 
-        if (!NetworkStatus.isConnected(ContextProvider.getContext())) {
+        if (!NetworkStatus.isConnected(BaseApplication.getContext())) {
             throw new ConnectException();
         }
 
@@ -50,7 +50,7 @@ public class HeaderInterceptor implements Interceptor {
         Request.Builder builder = chain.request().newBuilder();
         builder.addHeader("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
         builder.addHeader("Cache-Control", "no-cache");
-        builder.addHeader("version", PackageUtil.getVersionName(ContextProvider.getContext()));
+        builder.addHeader("version", PackageUtil.getVersionName(BaseApplication.getContext()));
         builder.addHeader("system", "android");
         builder.addHeader("timestamp", time + "");
         builder.addHeader("appid", appId);

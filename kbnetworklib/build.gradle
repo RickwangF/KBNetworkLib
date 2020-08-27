@@ -40,7 +40,7 @@ dependencies {
     api 'com.squareup.retrofit2:retrofit:2.8.1'
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.8.1'
-    implementation 'com.kbit:kbbaselib:1.0.18'
+    implementation 'com.kbit:kbbaselib:1.0.22'
 }
 
 // 配置2
@@ -62,11 +62,11 @@ uploadArchives { //新增 ，因为Android Studio gradle 支持maven插件，所
                 authentication(userName: 'U5nwEH', password: 'Jnk7riSPh8')
             }
             pom.project {
-                version '1.0.13' //版本名称
+                version '1.0.14' //版本名称
                 artifactId 'kbnetworklib'  //和前面网站上填写的一样
                 groupId 'com.kbit'  //和前面网站上填写的一样
                 packaging 'aar' //填写aar
-                description 'update version 1.0.13 add new method' //更新描述
+                description 'clear context provider' //更新描述
             }
         }
     }
